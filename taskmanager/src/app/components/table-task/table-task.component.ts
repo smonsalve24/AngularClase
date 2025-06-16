@@ -18,5 +18,6 @@ export class TableTaskComponent {
 
   deleteTask(id:number){
     this.service.deleteTask(id);
+    
   }
 }
