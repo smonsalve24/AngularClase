@@ -1,0 +1,17 @@
+.section-exit-strategy{
+    /* margin: 50px 0; */
+}
+.section-exit-strategy .component-exit-strategy{
+    box-shadow: 0 2px 4px rgba(72, 73, 72, 0.262), 0 4px 12px rgba(6, 17, 118, 0.469);
+    border-radius: 5px;
+}
+
+.section-exit-strategy .component-exit-strategy .item-image img{
+    width: 100%;
+    padding: 10px 0;
+}
+.section-exit-strategy .component-exit-strategy .item-description-button{
+    display: block;
+    margin: auto 0;
+    padding-left: 40px;
+}
