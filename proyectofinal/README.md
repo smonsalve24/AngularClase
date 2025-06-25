@@ -1,59 +1,198 @@
-# Proyectofinal
+# 8. Proyecto final
+La empresa netec necesita crear un frontend con angular que le permita mostrar cursos a sus clientes. Y un dashboard de administradores que permita editar los cursos que estan disponibles.
+La empresa netec ya tiene un api de cursos que tiene los siguientes métodos: GETALL, POST, PUT, DELETE, FINDBYID
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.14.
 
-## Development server
 
-To start a local development server, run:
+## Objetivos
+- Desplegar API Spring Boot
+- Crear aplicación de Angular 
+- Desplegar aplicación usando **Docker**
+- Válidar funcionamiento de la aplicación
 
-```bash
-ng serve
+---
+
+<div style="width: 400px;">
+        <table width="50%">
+            <tr>
+                <td style="text-align: center;">
+                    <a href="../Capitulo7/"><img src="../images/anterior.png" width="40px"></a>
+                    <br>anterior
+                </td>
+                <td style="text-align: center;">
+                   <a href="../README.md">Lista Laboratorios</a>
+                </td>
+<td style="text-align: center;">
+                    <a href="../Capitulo9/"><img src="../images/siguiente.png" width="40px"></a>
+                    <br>siguiente
+                </td>
+            </tr>
+        </table>
+</div>
+
+
+---
+
+
+## Diagrama
+
+![diagrama](../images/8/diagrama.png)
+
+
+
+## Instrucciones
+
+Los requerimientos son los siguientes: 
+
+- Se necesita que el alumno despliegue el API de Spring Boot que usaremos en el curso usando el siguiente **docker-compose.yaml**
+
+```yaml
+services:
+  mysqlserver:
+    container_name: mysqlserver
+    image: "mysql:8.0"
+    environment:
+      - MYSQL_ROOT_PASSWORD=netec123
+      - MYSQL_DATABASE=items
+    healthcheck:
+      test: mysqladmin ping -uroot -p${MYSQL_ROOT_PASSWORD} -hlocalhost
+  
+  microcourse:
+    container_name: microcourse
+    image: edgardovefe/angulardev:microservicecourse
+    environment:
+      - IP_DB=mysqlserver
+      - PORT_DB=3306
+      - NAME_DB=items
+      - USER_DB=root
+      - PASSWORD_DB=netec123
+    ports:
+      - 8084:8084
+    depends_on:
+      mysqlserver:
+        condition: service_healthy
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+2. Los métodos disponibles en el API son los siguientes: 
 
-## Code scaffolding
+**Base URL:** `/course`  
+**Formato:** JSON  
+**CORS:** Habilitado para cualquier origen (`@CrossOrigin(origins = "*")`)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
+## 📌 Endpoints Disponibles
+
+---
+
+### 🔹 GET `/course`
+
+**Descripción:**  
+Obtiene todos los cursos disponibles.
+
+**Respuesta:**
+- `200 OK` – Devuelve una lista de objetos `Course`.
+
+---
+
+### 🔹 GET `/course/{id}`
+
+**Descripción:**  
+Obtiene un curso específico por su ID.
+
+**Parámetros:**
+- `id` (path) – Identificador único del curso.
+
+**Respuestas:**
+- `200 OK` – Devuelve el curso solicitado.
+- `404 Not Found` – Si no se encuentra el curso.
+- `500 Internal Server Error` – Si ocurre un error inesperado.
+
+---
+
+### 🔹 POST `/course`
+
+**Descripción:**  
+Inserta un nuevo curso en el sistema.
+
+**Body:**
+```json
+{
+		"name": "Angular Developer",
+		"description": "Curso de angular usando la versión 19",
+		"duration": "35 horas",
+		"level": "Intermedio",
+		"price": 1000
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+**Respuestas:**
+- `201 Created` – Curso creado correctamente.
+- `500 Internal Server Error` – Error al insertar el curso.
 
-```bash
-ng generate --help
+---
+
+### 🔹 PUT `/course`
+
+**Descripción:**  
+Actualiza los datos de un curso existente.
+
+**Body:**
+```json
+{
+		"id": 1,
+		"name": "Angular Developer",
+		"description": "Curso de angular usando la versión 19",
+		"duration": "35 horas",
+		"level": "Intermedio",
+		"price": 1000
+}
 ```
 
-## Building
+**Respuestas:**
+- `200 OK` – Curso actualizado con éxito.
+- `404 Not Found` – Curso no encontrado.
+- `500 Internal Server Error` – Error al actualizar el curso.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+### 🔹 DELETE `/course/{id}`
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+**Descripción:**  
+Elimina un curso existente por su ID.
 
-## Running unit tests
+**Parámetros:**
+- `id` (path) – ID del curso a eliminar.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+**Respuestas:**
+- `200 OK` – Curso eliminado correctamente.
+- `404 Not Found` – Curso no encontrado.
+- `500 Internal Server Error` – Error al eliminar el curso.
+---
 
-```bash
-ng test
-```
 
-## Running end-to-end tests
+4. Se requiere que el alumno proponga un diseño que permita lo siguiente: 
 
-For end-to-end (e2e) testing, run:
+- Página publica que permita observar los cursos con tarjetas comodas para el usuario 
 
-```bash
-ng e2e
-```
+- Tendrá un apartado donde se activará un dashboard que permita la administración de los cursos  existentes
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+- Puede usar angular material o bootstrap para crear el diseño. 
 
-## Additional Resources
+- Al terminar se debe de desplegar la aplicación en **Docker** debe crear la imagen y en el mismo **docker-compose.yaml** donde se desplega el api, agregar el despliegue de la aplicación de **angular**. 
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Entregable:
+  - Capturas de pantalla mostrando el funcionamiento de la aplicación (mínimo 3)
+  - Respositorio publico en github donde se almacene su código
+  - Enviar un correo a:
+    - Correo: edgardo.velasco@netec.com
+    - Asunto: ProyectoAngularDev
+    - En el cuerpo del correo sólo enviar el enlace al repositorio donde se encuentra su proyecto.
+
+> **NOTA:** Se sugiere tener dentro del repositorio las capturas de pantalla **NO ENVIARLAS EN EL CORREO**. 
+
+
+
+
+
+

@@ -1,1 +1,163 @@
-<p>admin works!</p>
+<section class="section-banner-admin">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card text-bg-dark">
+                    <img src="https://images.pexels.com/photos/6634140/pexels-photo-6634140.jpeg?_gl=1*17wa994*_ga*NTAwNDIzOTI0LjE3NTA4NjU1ODU.*_ga_8JE65Q40S6*czE3NTA4NjU1ODQkbzEkZzEkdDE3NTA4NjU3MDgkajU5JGwwJGgw"
+                        class="card-img" alt="..." style="height: 15rem; object-fit: cover;">
+                    <div class="card-img-overlay">
+                        <div class="text-center py-5">
+                            <h1 class="card-title">Administrador</h1>
+                            <p class="card-text">Este es tu espacio como administrador para que puedas organizar los
+                                cursos que serán mostrados a los usuarios finales.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-form-admin">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-5">
+                <h2 class="text-center">Formulario</h2>
+                <p class="text-center">Ingresa los cursos que serán mostrados a los usuarios </p>
+            </div>
+            <div>
+                <form [formGroup]="courseForm" (ngSubmit)="addCourse()">
+                    <div class="mb-3">
+                        <label for="InputName" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="InputName" aria-describedby="nameHelp"
+                            formControlName="name">
+                        <div id="nameHelp" class="form-text">Este nombre se visualiza en las tarjetas de los cursos
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputName" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="InputName" aria-describedby="descriptionHelp"
+                            formControlName="description">
+                        <div id="descriptionHelp" class="form-text">Esta descripción se visualiza en las tarjetas de los
+                            cursos</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputName" class="form-label">Duración</label>
+                        <input type="text" class="form-control" id="InputName" aria-describedby="DurationHelp"
+                            formControlName="duration">
+                        <div id="DurationHelp" class="form-text">Este valor se visualiza en las tarjetas de los cursos
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputName" class="form-label">Nivel</label>
+                        <select class="form-select" aria-label="Default select example" formControlName="level">
+                            <option selected>Menu de niveles</option>
+                            <option value="Básico">Básico</option>
+                            <option value="Intermedio">Intermedio</option>
+                            <option value="Avanzado">Avanzado</option>
+                        </select>
+                        <div id="LevelHelp" class="form-text">Este nombre se visualiza en las tarjetas de los cursos
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="InputName" class="form-label">Precio</label>
+                        <input type="number" class="form-control" id="InputName" aria-describedby="PriceHelp"
+                            formControlName="price">
+                        <div id="PriceHelp" class="form-text">Este precio se visualiza en las tarjetas de los cursos
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-table-admin">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-5">
+                <h2 class="text-center">Cursos</h2>
+                <p class="text-center">Aquí podrás visualizar los cursos activos para los usuarios</p>
+            </div>
+            <div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Duración</th>
+                            <th scope="col">Nivel</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Accionables</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (course of courses(); track $index) {
+                        <tr>
+                            <th scope="row">{{course.id}}</th>
+                            <td>{{course.name}}</td>
+                            <td>{{course.description}}</td>
+                            <td>{{course.duration}}</td>
+                            <td>{{course.level}}</td>
+                            <td>{{course.price}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger mx-2"
+                                    (click)="deleteCourse(course.id)">Delete</button>
+                                <button type="button" class="btn btn-warning mx-2"
+                                    (click)="editCourse(course)">Edit</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="editCourseModal" tabindex="-1" aria-labelledby="editCourseModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form (ngSubmit)="saveCourse()">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCourseModalLabel">Editar Curso</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" [(ngModel)]="editingCourse.name" name="name"
+                                required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Descripción</label>
+                            <textarea class="form-control" [(ngModel)]="editingCourse.description" name="description"
+                                required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Duración</label>
+                            <input type="text" class="form-control" [(ngModel)]="editingCourse.duration"
+                                name="duration" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Nivel</label>
+                            <input type="text" class="form-control" [(ngModel)]="editingCourse.level" name="level" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Precio</label>
+                            <input type="number" class="form-control" [(ngModel)]="editingCourse.price" name="price" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</section>
