@@ -90,7 +90,9 @@ Esta sección permite gestionar los cursos y contiene:
 - Edición de cursos mediante modal (formulario prellenado)
 - Eliminación inmediata de cursos y actualización visual de tabla
 - Uso de `signal<Course[]>` para mantener sincronización reactiva
-
+- Imagen de Docker
+  - 📝 **Docker**:
+![Docker](images/Capturas%20de%20pantalla/Captura_Evidencia_Docker.png)
 ---
 
 ## 📁 Estructura del código
