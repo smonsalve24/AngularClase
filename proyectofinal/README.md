@@ -39,7 +39,7 @@ Contiene:
 
 
 
-![Vista Cursos](/images/Capturas%20de%20pantalla/Captura_Curso.jpeg)
+![Vista Curso](images/Capturas%20de%20pantalla/Captura_Curso.jpeg)
 
 
 ---
