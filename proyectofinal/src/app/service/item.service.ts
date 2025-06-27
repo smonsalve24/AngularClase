@@ -15,7 +15,7 @@ export interface Course {
 })
 export class ItemService {
   private http: HttpClient = inject(HttpClient);
-  private baseUrl: string = 'http://localhost:8084/course';
+  private baseUrl: string = '/api/course';
 
 
   getCourses(): Observable<Course[]> {
